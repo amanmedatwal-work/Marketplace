@@ -153,7 +153,7 @@ const SellerDashboard = () => {
       }
       if (showErrors) {
         if (err.code === 'ERR_NETWORK') {
-          setError('Cannot connect to server. Make sure the backend is running on port 5000.');
+          setError('Cannot connect to the backend API. Please try again in a moment.');
         } else if (err.response?.status === 401) {
           setError('Session expired. Please log in again.');
         } else {

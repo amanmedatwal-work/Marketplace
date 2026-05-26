@@ -51,7 +51,7 @@ const Login = () => {
       }
     } catch (error) {
       if (error.code === 'ERR_NETWORK') {
-        setError('Cannot connect to server. Make sure the backend is running on port 5000.');
+        setError('Cannot connect to the backend API. Please try again in a moment.');
       } else {
         setError(error.response?.data?.message || 'Server error! Make sure MongoDB is running.');
       }
