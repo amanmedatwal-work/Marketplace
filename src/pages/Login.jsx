@@ -193,10 +193,10 @@ const Login = () => {
             </button>
           </div>
 
-          {!googleConfigured && !githubConfigured && (
+          {(!googleConfigured || !githubConfigured) && (
             <div className="text-center mb-6">
               <p className="text-xs text-light-muted bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
-                OAuth not configured. Set GOOGLE_CLIENT_ID and GITHUB_CLIENT_ID in server .env to enable social login.
+                Social login is available after configuring provider keys in the backend environment.
               </p>
             </div>
           )}
