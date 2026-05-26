@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { CheckCircle, Download, ArrowLeft, ShoppingCart, FileCode } from 'lucide-react';
+import { apiUrl } from '../config/api';
 
 const PaymentSuccess = () => {
   const { orderId } = useParams();
@@ -18,7 +19,7 @@ const PaymentSuccess = () => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const response = await axios({
-        url: `http://localhost:5000/api/projects/${order.project?._id}/download`,
+        url: apiUrl(`/api/projects/${order.project?._id}/download`),
         method: 'GET',
         responseType: 'blob',
         headers: {
@@ -59,7 +60,7 @@ const PaymentSuccess = () => {
         const config = {
           headers: { Authorization: `Bearer ${userInfo?.token}` }
         };
-        const { data } = await axios.get(`http://localhost:5000/api/orders/${orderId}`, config);
+        const { data } = await axios.get(apiUrl(`/api/orders/${orderId}`), config);
         setOrder(data);
         setLoading(false);
       } catch (error) {

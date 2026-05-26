@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ExternalLink, ShoppingCart, Code, Star, User, Calendar, Tag, Globe, ShieldCheck, ChevronRight, Clock, Layers } from 'lucide-react';
 import axios from 'axios';
 import LivePreviewModal from '../components/LivePreviewModal';
+import { apiUrl } from '../config/api';
 
 const ProjectDetails = () => {
     const { id } = useParams();
@@ -15,7 +16,7 @@ const ProjectDetails = () => {
     useEffect(() => {
         const fetchProject = async () => {
             try {
-                const { data } = await axios.get(`http://localhost:5000/api/projects/${id}`);
+                const { data } = await axios.get(apiUrl(`/api/projects/${id}`));
                 setProject(data);
                 setLoading(false);
             } catch (err) {

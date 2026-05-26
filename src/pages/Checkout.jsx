@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { Lock, ShieldCheck, AlertCircle, ShoppingCart, ArrowLeft, CreditCard, ChevronRight } from 'lucide-react';
+import { apiUrl } from '../config/api';
 
 const Checkout = () => {
   const { id } = useParams();
@@ -15,7 +16,7 @@ const Checkout = () => {
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:5000/api/projects/${id}`);
+        const { data } = await axios.get(apiUrl(`/api/projects/${id}`));
         setProject(data);
         setLoading(false);
       } catch (err) {
@@ -48,7 +49,7 @@ const Checkout = () => {
               Authorization: `Bearer ${userInfo.token}`,
             },
           };
-          const verifyUrl = "http://localhost:5000/api/orders/verify";
+          const verifyUrl = apiUrl('/api/orders/verify');
           const { data: verifyData } = await axios.post(verifyUrl, {
             ...response,
             projectId: project._id,
@@ -94,7 +95,7 @@ const Checkout = () => {
 
       if (project.price === 0) {
         const { data } = await axios.post(
-          'http://localhost:5000http://localhost:5000/api/orders',
+          apiUrl('/api/orders'),
           { projectId: id, paymentMethod: 'Free' },
           config
         );
@@ -104,7 +105,7 @@ const Checkout = () => {
       }
 
       const { data } = await axios.post(
-        'http://localhost:5000http://localhost:5000/api/orders/razorpay',
+        apiUrl('/api/orders/razorpay'),
         { projectId: id },
         config
       );

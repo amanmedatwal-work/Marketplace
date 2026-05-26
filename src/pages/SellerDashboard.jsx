@@ -8,6 +8,7 @@ import {
   UploadCloud, GitBranch, Search, Link as LinkIcon, FileArchive,
   LayoutDashboard, TrendingUp, X, FolderOpen, Cloud, Settings, Store, ArrowRight
 } from 'lucide-react';
+import { apiUrl } from '../config/api';
 
 const getRepoInfo = (url) => {
   if (!url) return null;
@@ -140,7 +141,7 @@ const SellerDashboard = () => {
       const config = {
         headers: { Authorization: `Bearer ${userInfo?.token}` },
       };
-      const { data } = await axios.get('http://localhost:5000/api/projects/myprojects', config);
+      const { data } = await axios.get(apiUrl('/api/projects/myprojects'), config);
       setProjects(data);
       setNotSeller(false);
       setLoading(false);
@@ -455,14 +456,14 @@ const SellerDashboard = () => {
         }
       }
 
-      const { data: createdProject } = await axios.post('http://localhost:5000/api/projects', projectPayload, config);
+      const { data: createdProject } = await axios.post(apiUrl('/api/projects'), projectPayload, config);
       setSuccess('Project uploaded successfully!');
 
       // Trigger auto-analysis for local uploads
       if (selectedFile && createdProject?._id) {
         try {
           await axios.post(
-            `http://localhost:5000/api/projects/analyze/${createdProject._id}`,
+            apiUrl(`/api/projects/analyze/${createdProject._id}`),
             {},
             config
           );
@@ -509,7 +510,7 @@ const SellerDashboard = () => {
       const config = {
         headers: { Authorization: `Bearer ${userInfo?.token}` },
       };
-      const { data } = await axios.put('http://localhost:5000/api/auth/upgrade-to-seller', {}, config);
+      const { data } = await axios.put(apiUrl('/api/auth/upgrade-to-seller'), {}, config);
       localStorage.setItem('userInfo', JSON.stringify(data));
       setSuccess('Upgraded to seller successfully! You can now upload projects.');
       setNotSeller(false);

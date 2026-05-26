@@ -5,6 +5,7 @@ import { Search, Filter, Star, Code, ShoppingCart, ExternalLink, Grid3X3, List, 
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import LivePreviewModal from '../components/LivePreviewModal';
+import { apiUrl } from '../config/api';
 
 const categories = ['All', 'Web App', 'Mobile App', 'API', 'UI Kit', 'Boilerplate', 'Theme', 'Other'];
 
@@ -20,7 +21,7 @@ const Marketplace = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/api/projects');
+        const { data } = await axios.get(apiUrl('/api/projects'));
         setProjects(data);
         setLoading(false);
       } catch (error) {

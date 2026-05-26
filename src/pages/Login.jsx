@@ -3,8 +3,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { Code2, Mail, Lock, Eye, EyeOff, AlertCircle, Loader } from 'lucide-react';
-
-const API_URL = 'http://localhost:5000';
+import { apiUrl } from '../config/api';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -20,7 +19,7 @@ const Login = () => {
   useEffect(() => {
     const fetchStatus = async () => {
       try {
-        const { data } = await axios.get(`${API_URL}/api/auth/oauth-status`);
+        const { data } = await axios.get(apiUrl('/api/auth/oauth-status'));
         setOauthStatus(data);
       } catch (_) {}
     };
@@ -43,7 +42,7 @@ const Login = () => {
     e.preventDefault();
     setError('');
     try {
-      const response = await axios.post(`${API_URL}/api/auth/login`, { email, password });
+      const response = await axios.post(apiUrl('/api/auth/login'), { email, password });
       localStorage.setItem('userInfo', JSON.stringify(response.data));
       if (response.data.role === 'seller') {
         navigate('/seller-dashboard');
@@ -62,7 +61,7 @@ const Login = () => {
   const handleOAuthLogin = (provider) => {
     setOauthLoading(provider);
     setError('');
-    window.location.href = `${API_URL}/api/auth/${provider}?role=buyer`;
+    window.location.href = apiUrl(`/api/auth/${provider}?role=buyer`);
   };
 
   const googleConfigured = oauthStatus.google?.configured;

@@ -1,12 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
+import {
   X, Monitor, Tablet, Smartphone, ArrowUpRight, Copy, Check,
   Lock, Info, Layout, Layers, Code, GitBranch, RefreshCw,
   AlertTriangle, Server, FileCode, Package, Globe,
   Play, Square, Loader
 } from 'lucide-react';
 import axios from 'axios';
+import { apiUrl } from '../config/api';
 
 const TIMEOUT_DEMO = 8000;
 const TIMEOUT_STACKBLITZ = 30000;
@@ -87,7 +88,7 @@ const LivePreviewModal = ({ project, onClose }) => {
     
     const checkHealth = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:5000/api/projects/preview/${project._id}/status`);
+        const { data } = await axios.get(apiUrl(`/api/projects/preview/${project._id}/status`));
         setPreviewHealth(data);
       } catch (err) {
         // silent
@@ -108,7 +109,7 @@ const LivePreviewModal = ({ project, onClose }) => {
     
     runtimePollRef.current = setInterval(async () => {
       try {
-        const { data } = await axios.get(`http://localhost:5000/api/projects/runtime/status/${project._id}`);
+        const { data } = await axios.get(apiUrl(`/api/projects/runtime/status/${project._id}`));
         setRuntimeStatus(data.status);
         if (data.status === 'running') {
           setRuntimeUrl(data.proxyPath ? `${data.proxyPath}` : (data.previewUrl || ''));
@@ -139,7 +140,7 @@ const LivePreviewModal = ({ project, onClose }) => {
     setRuntimeStatus('starting');
     setRuntimeMessage('Starting runtime sandbox...');
     try {
-      const { data } = await axios.post(`http://localhost:5000/api/projects/runtime/start/${project._id}`);
+      const { data } = await axios.post(apiUrl(`/api/projects/runtime/start/${project._id}`));
       if (data.status === 'running') {
         setRuntimeStatus('running');
         setRuntimeUrl(data.proxyPath ? `${data.proxyPath}` : (data.previewUrl || ''));
@@ -147,7 +148,7 @@ const LivePreviewModal = ({ project, onClose }) => {
         setIsStartingRuntime(false);
       } else if (data.status === 'static') {
         setRuntimeStatus('running');
-        setRuntimeUrl(`http://localhost:5000/api/projects/preview/${project._id}`);
+        setRuntimeUrl(apiUrl(`/api/projects/preview/${project._id}`));
         setRuntimeMessage('Static site preview ready');
         setIsStartingRuntime(false);
       } else {
@@ -163,7 +164,7 @@ const LivePreviewModal = ({ project, onClose }) => {
 
   const handleStopRuntime = async () => {
     try {
-      await axios.post(`http://localhost:5000/api/projects/runtime/stop/${project._id}`);
+      await axios.post(apiUrl(`/api/projects/runtime/stop/${project._id}`));
     } catch (_) {}
     setRuntimeStatus(null);
     setRuntimeUrl('');
@@ -197,7 +198,7 @@ const LivePreviewModal = ({ project, onClose }) => {
 
   const getPreviewUrl = () => {
     if (hasDemoUrl) return actualDemoUrl;
-    if (isLocalUpload) return `http://localhost:5000/api/projects/preview/${project._id}`;
+    if (isLocalUpload) return apiUrl(`/api/projects/preview/${project._id}`);
     if (hasGithubUrl) {
       const sb = getStackBlitzUrl('preview');
       if (sb) return sb;

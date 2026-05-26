@@ -3,8 +3,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { Code2, Mail, Lock, User, Eye, EyeOff, ShoppingBag, Store, AlertCircle, ChevronRight, Loader } from 'lucide-react';
-
-const API_URL = 'http://localhost:5000';
+import { apiUrl } from '../config/api';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -24,7 +23,7 @@ const Register = () => {
   useEffect(() => {
     const fetchStatus = async () => {
       try {
-        const { data } = await axios.get(`${API_URL}/api/auth/oauth-status`);
+        const { data } = await axios.get(apiUrl('/api/auth/oauth-status'));
         setOauthStatus(data);
       } catch (_) {}
     };
@@ -46,7 +45,7 @@ const Register = () => {
   const handleOAuthLogin = (provider) => {
     setOauthLoading(provider);
     setError('');
-    window.location.href = `${API_URL}/api/auth/${provider}?role=${formData.role}`;
+    window.location.href = apiUrl(`/api/auth/${provider}?role=${formData.role}`);
   };
 
   const googleConfigured = oauthStatus.google?.configured;
@@ -55,7 +54,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${API_URL}/api/auth/register`, formData);
+      const response = await axios.post(apiUrl('/api/auth/register'), formData);
       console.log('Registered successfully:', response.data);
       localStorage.setItem('userInfo', JSON.stringify(response.data));
       if (response.data.role === 'seller') {
