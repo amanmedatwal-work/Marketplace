@@ -223,7 +223,7 @@ const Register = () => {
           <div className="grid grid-cols-2 gap-3 mb-6">
             <button
               onClick={() => handleOAuthLogin('google')}
-              disabled={oauthLoading !== null}
+              disabled={oauthLoading !== null || !googleConfigured}
               className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-white border border-light-border text-light-text-secondary hover:text-light-text hover:border-brand-300 transition-all text-sm disabled:opacity-50 disabled:cursor-wait"
             >
               {oauthLoading === 'google' ? (
@@ -235,7 +235,7 @@ const Register = () => {
             </button>
             <button
               onClick={() => handleOAuthLogin('github')}
-              disabled={oauthLoading !== null}
+              disabled={oauthLoading !== null || !githubConfigured}
               className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-white border border-light-border text-light-text-secondary hover:text-light-text hover:border-brand-300 transition-all text-sm disabled:opacity-50 disabled:cursor-wait"
             >
               {oauthLoading === 'github' ? (
