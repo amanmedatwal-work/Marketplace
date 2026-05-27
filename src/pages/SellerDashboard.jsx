@@ -96,6 +96,8 @@ const SellerDashboard = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [showUploadForm, setShowUploadForm] = useState(false);
+  const [realEarnings, setRealEarnings] = useState(0);
+  const [salesCount, setSalesCount] = useState(0);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -143,6 +145,15 @@ const SellerDashboard = () => {
       };
       const { data } = await axios.get(apiUrl('/api/projects/myprojects'), config);
       setProjects(data);
+      
+      try {
+        const { data: salesData } = await axios.get(apiUrl('/api/orders/seller/sales'), config);
+        setRealEarnings(salesData.totalEarnings);
+        setSalesCount(salesData.salesCount);
+      } catch (salesErr) {
+        console.error('Error fetching sales data:', salesErr);
+      }
+
       setNotSeller(false);
       setLoading(false);
     } catch (err) {
@@ -571,9 +582,9 @@ const SellerDashboard = () => {
             className="glass-card p-6 flex items-center justify-between group hover:border-green-300 transition-all"
           >
             <div>
-              <span className="text-sm text-light-text-secondary">Simulated Earnings</span>
-              <h3 className="text-3xl font-bold text-green-600 mt-1">${totalEarnings}</h3>
-              <p className="text-xs text-light-muted mt-1">$5 per approval</p>
+              <span className="text-sm text-light-text-secondary">Real Earnings</span>
+              <h3 className="text-3xl font-bold text-green-600 mt-1">${realEarnings}</h3>
+              <p className="text-xs text-light-muted mt-1">{salesCount} Sales (Simulated: ${totalEarnings})</p>
             </div>
             <div className="w-14 h-14 rounded-2xl bg-green-50 border border-green-100 flex items-center justify-center group-hover:bg-green-100 transition-all">
               <TrendingUp size={28} className="text-green-500" />
