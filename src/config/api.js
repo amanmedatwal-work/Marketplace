@@ -1,6 +1,6 @@
 const fallbackApiUrl = import.meta.env.DEV
   ? 'http://localhost:5000'
-  : 'https://market-back.vercel.app';
+  : 'https://market-back-iota.vercel.app';
 
 export const API_BASE_URL = (import.meta.env.VITE_API_URL || fallbackApiUrl).replace(/\/$/, '');
 
