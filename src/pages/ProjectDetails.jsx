@@ -183,13 +183,13 @@ const ProjectDetails = () => {
                     </div>
 
                     {/* Sidebar */}
-                    <div className="space-y-6">
+                    <div className="space-y-6 lg:sticky lg:top-24 lg:self-start">
                         {/* Price & Actions */}
                         <motion.div
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.15 }}
-                            className="glass-card p-6 sticky top-24"
+                            className="glass-card p-6"
                         >
                             <div className="text-center mb-6 pb-6 border-b border-light-border">
                                 <span className="text-sm text-light-text-secondary">Price</span>
